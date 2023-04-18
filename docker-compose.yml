@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  app:
+    image: community:latest
+    container_name: community-app
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/home/node/app
+      - ./node_modules:/home/node/app/node_modules
+      - ./.env:/home/node/app/.env
+      - ./package.json:/home/node/app/package.json
+      - ./tsconfig.json:/home/node/app/tsconfig.json
+    command: sh -c "npm run dev"
+    ports:
+      - "3000:3000"
+    links:
+      - "db:db"
+  db:
+    image: postgres:14.5-alpine
+    restart: always
+    container_name: community-db
+    environment:
+      POSTGRES_PASSWORD: "community"
+      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "community_dev"
+    ports:
+      - 5432:5432
+    volumes:
+      - ~/.docker-conf/community/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-U", "community_dev"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
