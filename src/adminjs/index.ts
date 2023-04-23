@@ -4,6 +4,8 @@ import AdminJSSequelize from '@adminjs/sequelize';
 import { sequelize } from "../app/db";
 import { Router } from "express";
 import { adminJsResources } from "./resources";
+import { User } from "../app/models";
+import bcrypt from 'bcrypt';
 
 class AdminJsClass {
   private readonly _adminJs: AdminJS;
@@ -16,11 +18,11 @@ class AdminJsClass {
       rootPath: '/admin',
       resources: adminJsResources,
       branding: {
-        companyName: 'OneBitFlix',
-        logo: '/assets/img/logoOnebitflix.svg',
+        companyName: 'Community',
+        logo: '/assets/img/Inc.Community.svg',
         theme: {
           colors: {
-            primary100: '#ff0043',
+            primary100: '#004aad',
             primary80: '#ff1a57',
             primary60: '#ff3369',
             primary40: '#ff4d7c',
@@ -38,7 +40,28 @@ class AdminJsClass {
       },
     });
 
-    this._adminJsRouter = AdminJSExpress.buildRouter(this._adminJs);
+    this._adminJsRouter = AdminJSExpress.buildAuthenticatedRouter(this.adminJs, {
+      authenticate: async (email, password) => {
+        const user = await User.findOne({ where: { email } });
+
+        if(!user || user.role == 'user'){
+          return
+        }
+
+        const matched = await bcrypt.compare(password, user.password);
+
+        if(!matched){
+          return
+        }
+
+        return user
+      },
+      cookiePassword: 'senha'
+    }, null,
+      {
+        resave: false,
+        saveUninitialized: false
+      });
   }
 
   public get adminJs() {

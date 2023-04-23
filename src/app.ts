@@ -5,7 +5,7 @@ import path from "path";
 import Routes from "./routes";
 import { sequelize } from "./app/db";
 import Logger from "./lib/Logger";
-import AdminJs from '../src/AdminJs';
+import AdminJs from './adminjs';
 
 class App {
   private readonly _app: Application;
@@ -14,8 +14,8 @@ class App {
   constructor() {
     this._app = express();
     this._server = createServer(this._app);
-    this.middlewares();
     this.routes();
+    this.middlewares();
     this.db();
   }
 
@@ -31,8 +31,8 @@ class App {
   }
 
   private routes(): void {
-    this._app.use("/api", new Routes().startRoutes().router);
     this._app.use(AdminJs.adminJs.options.rootPath, AdminJs.adminJsRouter)
+    this._app.use("/api", new Routes().startRoutes().router);
   }
 
   private async db(): Promise<void> {
