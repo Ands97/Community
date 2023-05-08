@@ -1,6 +1,6 @@
 import config from "./config";
 import App from "./app";
-import Logger from "./lib/Logger";
+import Logger from "./utils/Logger";
 
 const app = new App();
 

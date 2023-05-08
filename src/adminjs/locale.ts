@@ -88,7 +88,7 @@ export const locale: Locale = {
       confirmDelete: 'Você tem certeza que deseja remover este item? Essa ação é irreversível',
       welcomeOnBoard_title: 'Bem-vindo à bordo!',
       welcomeOnBoard_subtitle: 'Agora você é um de nós! Preparamos algumas dicas para você começar:',
-      loginWelcome: 'Ao AdminJS - o melhor framework admin para aplicações Node.js, baseado em React.',
+      loginWelcome: 'Ao Admin, seu portal de gerenciamento de videos',
       addingResources_title: 'Adicionando Recursos',
       addingResources_subtitle: 'Como adicionar novos recursos à barra lateral',
       customizeResources_title: 'Personalizar Recursos',

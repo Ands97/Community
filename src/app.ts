@@ -4,7 +4,7 @@ import cors from "cors";
 import path from "path";
 import Routes from "./routes";
 import { sequelize } from "./app/db";
-import Logger from "./lib/Logger";
+import Logger from "./utils/Logger";
 import AdminJs from './adminjs';
 
 class App {
@@ -38,6 +38,8 @@ class App {
   private async db(): Promise<void> {
     sequelize.authenticate().then(() => {
       Logger.info('DB connection successfull');
+    }).catch(err => {
+      Logger.error("Error DB", err)
     })
   }
 }
