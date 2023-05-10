@@ -10,20 +10,99 @@ class CoursesService implements ICoursesService {
         this._repo = repo
     }
 
-   public async getCourseByIdWithEpisodes(id: string): Promise<Result<ICourse>> {
-       try {
+    public async getRandomFeaturedCourses(): Promise<Result<ICourse[]>> {
+        try {
+            const {
+                success,
+                response: featuredCourses,
+                error
+            } = await this._repo.getFeaturedCourses();
+
+            if(!success){
+                return Result.error(error);
+            }
+
+            const randomFeaturedCourses = featuredCourses.sort(() => 0.5 - Math.random()).slice(0,3);
+
+            return Result.success(randomFeaturedCourses)
+        } catch (error) {
+            return Result.error(
+                new ErrorApplication(
+                    'CoursesService > getRandomFeaturedCourses',
+                    error as string,
+                    500
+                )
+            )
+        }
+    }
+
+    public async getTopTenNewest(): Promise<Result<ICourse[]>> {
+        try {
+            const {
+                success,
+                response: TopTenNewestCourses,
+                error
+            } = await this._repo.getTopTenNewest();
+
+            if(!success){
+                return Result.error(error)
+            }
+
+            return Result.success(TopTenNewestCourses);
+        } catch (error) {
+            return Result.error(
+                new ErrorApplication(
+                    'CoursesService > getTopTenNewest',
+                    error as string,
+                    500
+                )
+            )
+        }
+    }
+
+    public async getCoursesByName(name: string, page: number, perPage: number): Promise<Result<{
+        courses: ICourse[],
+        page: number,
+        perPage: number,
+        total: number
+    }>> {
+            try {
+                const {
+                    success,
+                    response: courses,
+                    error
+                } = await this._repo.getCoursesByName(name, page, perPage);
+
+                if(!success){
+                    return Result.error(error)
+                }
+
+                return Result.success(courses)
+            } catch (error) {
+                return Result.error(
+                    new ErrorApplication(
+                        'CoursesService > getCoursesByName',
+                        error as string,
+                        500
+                    )
+                )
+            }
+    }
+
+    public async getCourseByIdWithEpisodes(id: string): Promise<Result<ICourse>> {
+        try {
             const {
                 success,
                 response,
                 error
             } = await this._repo.getCourseByIdWithEpisodes(id);
 
-            if(!success){
+            if (!success) {
                 return Result.error(error)
             }
 
             return Result.success(response)
-       } catch (error) {
+        } catch (error) {
             return Result.error(
                 new ErrorApplication(
                     'CoursesService > getCourseByIdWithEpisodes',
@@ -31,8 +110,8 @@ class CoursesService implements ICoursesService {
                     500
                 )
             )
-       }
-   }
+        }
+    }
 }
 
 

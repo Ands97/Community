@@ -26,11 +26,14 @@ class Routes {
 
   private categoriesRoutes(): void{
     this.router.get('/categories', CategoriesController.index);
-    this.router.get('/categories/:id', CategoriesController.show)
+    this.router.get('/categories/:id', CategoriesController.show);
   }
 
   private coursesRoutes(): void{
-    this.router.get('/courses/:id', CoursesController.show)
+    this.router.get('/courses/featured', CoursesController.getFatured);
+    this.router.get('/courses/newest', CoursesController.getNewest);
+    this.router.get('/courses/search', CoursesController.search);
+    this.router.get('/courses/:id', CoursesController.show);
   }
 
 }

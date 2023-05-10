@@ -1,20 +1,14 @@
 import { Request, Response } from "express";
 import CategoriesFactory from "../factories/CategoriesFactory";
 import Logger from "../../utils/Logger";
+import { Helpers } from "../../utils/helpers/Helpers";
 
 class CategoriesController {
     public async index(req: Request, res: Response): Promise<void> {
-        const { page, limit } = req.query;
+        const [ page, perPage ] = Helpers.getPaginationParams(req.query);
 
-        const limitNumber = typeof limit === 'string' && parseInt(limit, 10) > 0
-            ? parseInt(limit, 10)
-            : 10
 
-        const pageNumber = typeof page === 'string' && parseInt(page, 10) > 0
-            ? parseInt(page, 10)
-            : 1
-
-        const offset = (pageNumber - 1) * limitNumber;
+        const offset = (page - 1) * perPage;
 
         try {
             const service = CategoriesFactory.getService();
@@ -23,7 +17,7 @@ class CategoriesController {
                 success: existsCategories,
                 response: categories,
                 error
-            } = await service.getCategories(limitNumber, offset);
+            } = await service.getCategories(perPage, offset);
             
             if (!existsCategories) {
                 throw error
@@ -31,8 +25,8 @@ class CategoriesController {
 
             res.json({
                 categories: categories.categories,
-                page: pageNumber,
-                limit,
+                page: page,
+                perPage,
                 total: categories.total
             })
 
