@@ -1,12 +1,13 @@
 import { Sequelize } from "sequelize";
+import config from "../../config";
 
 export const sequelize = new Sequelize({
     dialect: 'postgres',
-    host: '192.168.0.107',
-    port: 5432,
-    database: 'community_dev',
-    username: 'postgres',
-    password: 'community',
+    host: config.db.host,
+    port: config.db.port,
+    database: config.db.dbName,
+    username: config.db.user,
+    password: config.db.password,
     define: {
         underscored: true
     }
