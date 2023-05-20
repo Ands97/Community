@@ -2,6 +2,7 @@ import { Response, Router } from "express";
 import CategoriesController from "./app/controllers/CategoriesController";
 import CoursesController from "./app/controllers/CoursesController";
 import EpisodesController from "./app/controllers/EpisodesController";
+import UserController from "./app/controllers/UserController";
 
 class Routes {
   readonly router: Router;
@@ -22,6 +23,7 @@ class Routes {
     this.categoriesRoutes();
     this.coursesRoutes();
     this.episodesRoutes();
+    this.userRoutes();
     return this;
   }
 
@@ -39,6 +41,10 @@ class Routes {
 
   private episodesRoutes(): void {
     this.router.get('/episodes/stream', EpisodesController.stream)
+  }
+
+  private userRoutes(): void {
+    this.router.post('/auth/register', UserController.register)
   }
 
 }

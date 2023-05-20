@@ -32,7 +32,7 @@ class CategoriesController {
 
         } catch (error: any) {
             Logger.error('CategoriesController > index', error)
-            res.status(error.code).json(error)
+            res.status(error.code ?? 500).json(error)
         }
     }
 
@@ -55,7 +55,7 @@ class CategoriesController {
             res.json(category)
         } catch (error: any) {
             Logger.error('CategoriesController > show', error)
-            res.status(error.code).json(error)
+            res.status(error.code ?? 500).json(error)
         }
     }
 }

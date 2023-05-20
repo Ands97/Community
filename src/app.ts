@@ -14,8 +14,8 @@ class App {
   constructor() {
     this._app = express();
     this._server = createServer(this._app);
-    this.routes();
     this.middlewares();
+    this.routes();
     this.db();
   }
 

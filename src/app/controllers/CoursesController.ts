@@ -21,7 +21,7 @@ class CoursesController {
             res.json(response)
         } catch (error: any) {
             Logger.error('CoursesController > getFatured', error)
-            res.status(error.code).json(error)
+            res.status(error.code ?? 500).json(error)
         }
     }
 
@@ -42,7 +42,7 @@ class CoursesController {
             res.json(response)
         } catch (error: any) {
             Logger.error('CoursesController > getNewest', error)
-            res.status(error.code).json(error)
+            res.status(error.code ?? 500).json(error)
         }
     }
 
@@ -69,7 +69,7 @@ class CoursesController {
             res.json(response)
         } catch (error: any) {
             Logger.error('CoursesController > search', error)
-            res.status(error.code).json(error)
+            res.status(error.code ?? 500).json(error)
         }
     }
     
@@ -93,7 +93,7 @@ class CoursesController {
             res.json(course)
         } catch (error: any) {
             Logger.error('CoursesController > show', error)
-            res.status(error.code).json(error)
+            res.status(error.code ?? 500 ?? 500).json(error)
         }
     }
 }
